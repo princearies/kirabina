@@ -37,6 +37,14 @@ const categories = [
       { id: 'fence', name: 'Fence Calculator', desc: 'Calculate fence posts, rails, and pickets needed' },
     ]
   },
+  {
+    title: 'Metalwork & Fabrication',
+    icon: '🔧',
+    color: 'from-purple-500 to-purple-600',
+    calculators: [
+      { id: 'tube-miter', name: 'Round Tube Miter', desc: 'Generate printable miter cutting templates for round tubes and pipes' },
+    ]
+  },
 ]
 
 const moreCalculators = [
@@ -50,6 +58,7 @@ const moreCalculators = [
   { name: 'Gazebo', icon: '⛺' },
   { name: 'Circle Divider', icon: '⭕' },
   { name: 'Pipe Notching', icon: '🔧' },
+  { name: 'Tube Miter Template', icon: '📐' },
   { name: 'Kerf Spacing', icon: '🪚' },
   { name: 'Tapered Staves', icon: '🪣' },
   { name: 'Pitch to Angle', icon: '📊' },

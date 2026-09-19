@@ -8,6 +8,7 @@ import RoofCalculator from './components/calculators/RoofCalculator'
 import DeckCalculator from './components/calculators/DeckCalculator'
 import BrickCalculator from './components/calculators/BrickCalculator'
 import FenceCalculator from './components/calculators/FenceCalculator'
+import TubeMiterCalculator from './components/calculators/TubeMiterCalculator'
 import Testimonials from './components/Testimonials'
 import Footer from './components/Footer'
 
@@ -22,6 +23,7 @@ function App() {
       case 'deck': return <DeckCalculator />
       case 'brick': return <BrickCalculator />
       case 'fence': return <FenceCalculator />
+      case 'tube-miter': return <TubeMiterCalculator />
       default: return null
     }
   }
