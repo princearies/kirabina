@@ -132,7 +132,7 @@ export default function ConcreteCalculator() {
               
               {results ? (
                 <div className="space-y-3">
-                  <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                  <div className="bg-slate-100 rounded-lg p-4 border border-slate-200">
                     <div className="text-sm text-slate-500">Volume</div>
                     <div className="text-xl font-bold text-slate-800">
                       {results.volumeCubicFeet.toFixed(2)} cu ft

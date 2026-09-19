@@ -69,13 +69,13 @@ const moreCalculators = [
 
 export default function CalculatorGrid({ onSelectCalculator }: CalculatorGridProps) {
   return (
-    <section id="calculators" className="py-16 bg-white">
+    <section id="calculators" className="py-16 bg-slate-800">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Construction Calculators
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
+          <p className="text-slate-300 max-w-2xl mx-auto">
             Select a calculator below to get started. All calculators provide instant results with detailed diagrams and measurements.
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function CalculatorGrid({ onSelectCalculator }: CalculatorGridPro
         {/* Calculator Categories */}
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           {categories.map((category) => (
-            <div key={category.title} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            <div key={category.title} className="bg-slate-700 rounded-xl border border-slate-600 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
               <div className={`bg-gradient-to-r ${category.color} px-6 py-4 text-white`}>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{category.icon}</span>
@@ -95,16 +95,16 @@ export default function CalculatorGrid({ onSelectCalculator }: CalculatorGridPro
                   <button
                     key={calc.id}
                     onClick={() => onSelectCalculator(calc.id)}
-                    className="w-full text-left p-4 rounded-lg hover:bg-slate-50 border border-slate-100 hover:border-blue-200 transition-all group mb-3 last:mb-0"
+                    className="w-full text-left p-4 rounded-lg hover:bg-slate-600 border border-slate-500 hover:border-blue-400 transition-all group mb-3 last:mb-0"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
+                        <h4 className="font-semibold text-white group-hover:text-blue-400 transition-colors">
                           {calc.name}
                         </h4>
-                        <p className="text-sm text-slate-500 mt-1">{calc.desc}</p>
+                        <p className="text-sm text-slate-300 mt-1">{calc.desc}</p>
                       </div>
-                      <svg className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
@@ -116,22 +116,22 @@ export default function CalculatorGrid({ onSelectCalculator }: CalculatorGridPro
         </div>
 
         {/* More Calculators Grid */}
-        <div className="bg-slate-50 rounded-xl p-8">
-          <h3 className="text-xl font-bold text-slate-800 mb-6 text-center">
+        <div className="bg-slate-700/50 rounded-xl p-8 border border-slate-600">
+          <h3 className="text-xl font-bold text-white mb-6 text-center">
             More Calculators Available
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3">
             {moreCalculators.map((calc) => (
               <div 
                 key={calc.name}
-                className="bg-white p-3 rounded-lg border border-slate-200 text-center hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer"
+                className="bg-slate-600 p-3 rounded-lg border border-slate-500 text-center hover:border-blue-400 hover:bg-slate-500 hover:shadow-sm transition-all cursor-pointer"
               >
                 <span className="text-xl">{calc.icon}</span>
-                <p className="text-xs font-medium text-slate-700 mt-1">{calc.name}</p>
+                <p className="text-xs font-medium text-slate-200 mt-1">{calc.name}</p>
               </div>
             ))}
           </div>
-          <p className="text-center text-sm text-slate-500 mt-6">
+          <p className="text-center text-sm text-slate-400 mt-6">
             And many more! New calculators added regularly.
           </p>
         </div>

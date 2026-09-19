@@ -45,13 +45,13 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section id="reviews" className="py-16 bg-slate-50">
+    <section id="reviews" className="py-16 bg-slate-800">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Reviews & Project Examples
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
+          <p className="text-slate-300 max-w-2xl mx-auto">
             See what builders, contractors, and DIY enthusiasts are saying about our calculators.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <div 
               key={index}
-              className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow"
+              className="bg-slate-700 rounded-xl p-6 shadow-sm border border-slate-600 hover:shadow-md transition-shadow"
             >
               {/* Stars */}
               <div className="flex gap-1 mb-3">
@@ -72,20 +72,20 @@ export default function Testimonials() {
               </div>
 
               {/* Quote */}
-              <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-4">
+              <p className="text-slate-300 text-sm leading-relaxed mb-4 line-clamp-4">
                 "{testimonial.text}"
               </p>
 
               {/* Project info */}
-              <div className="border-t border-slate-100 pt-3">
+              <div className="border-t border-slate-600 pt-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-semibold text-slate-800 text-sm">{testimonial.name}</p>
-                    <p className="text-xs text-slate-500">{testimonial.location}</p>
+                    <p className="font-semibold text-white text-sm">{testimonial.name}</p>
+                    <p className="text-xs text-slate-400">{testimonial.location}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-medium text-blue-600">{testimonial.calculator}</p>
-                    <p className="text-xs text-slate-400">{testimonial.project}</p>
+                    <p className="text-xs font-medium text-blue-400">{testimonial.calculator}</p>
+                    <p className="text-xs text-slate-500">{testimonial.project}</p>
                   </div>
                 </div>
               </div>
@@ -95,9 +95,9 @@ export default function Testimonials() {
 
         {/* CTA */}
         <div className="mt-12 text-center">
-          <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 max-w-2xl mx-auto">
-            <h3 className="text-xl font-bold text-slate-800 mb-2">Built Something Using Our Calculators?</h3>
-            <p className="text-slate-600 mb-4">
+          <div className="bg-slate-700 rounded-xl p-8 shadow-sm border border-slate-600 max-w-2xl mx-auto">
+            <h3 className="text-xl font-bold text-white mb-2">Built Something Using Our Calculators?</h3>
+            <p className="text-slate-300 mb-4">
               We'd love to see your projects! Send us photos and a description for our examples list.
             </p>
             <button className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
