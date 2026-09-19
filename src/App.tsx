@@ -9,6 +9,7 @@ import DeckCalculator from './components/calculators/DeckCalculator'
 import BrickCalculator from './components/calculators/BrickCalculator'
 import FenceCalculator from './components/calculators/FenceCalculator'
 import TubeMiterCalculator from './components/calculators/TubeMiterCalculator'
+import TubeNotchCalculator from './components/calculators/TubeNotchCalculator'
 import Testimonials from './components/Testimonials'
 import Footer from './components/Footer'
 
@@ -24,6 +25,7 @@ function App() {
       case 'brick': return <BrickCalculator />
       case 'fence': return <FenceCalculator />
       case 'tube-miter': return <TubeMiterCalculator />
+      case 'tube-notch': return <TubeNotchCalculator />
       default: return null
     }
   }

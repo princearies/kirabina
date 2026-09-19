@@ -43,6 +43,7 @@ const categories = [
     color: 'from-purple-500 to-purple-600',
     calculators: [
       { id: 'tube-miter', name: 'Round Tube Miter', desc: 'Generate printable miter cutting templates for round tubes and pipes' },
+      { id: 'tube-notch', name: 'Tube Notching', desc: 'Generate saddle cut templates for tube-to-tube intersections' },
     ]
   },
 ]
