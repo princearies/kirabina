@@ -343,25 +343,32 @@ export default function TubeNotchCalculator() {
                   {/* Template SVG */}
                   <div className="bg-white rounded-lg p-4 border-2 border-dashed border-orange-200">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-orange-700 font-medium">
-                        Saddle Cut Template ({formatMeasurement(fromInches(results.circumference, unit), unit)} × {formatMeasurement(fromInches(results.maxDepth, unit), unit)})
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-orange-700 font-medium">
+                          Saddle Cut Template ({formatMeasurement(fromInches(results.circumference, unit), unit)} × {formatMeasurement(fromInches(results.maxDepth, unit), unit)})
+                        </span>
+                        <span className="text-[10px] px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-semibold border border-green-200">
+                          1:1 FULL SCALE
+                        </span>
+                      </div>
                       <div className="flex gap-2">
                         <button 
-                          onClick={() => printTemplate('tube-notch-template')}
-                          className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors"
+                          onClick={() => printTemplate('tube-notch-template', unit === 'mm' ? 'mm' : 'in')}
+                          className="text-xs px-3 py-1.5 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-semibold shadow-sm"
                         >
-                          🖨️ Print
+                          🖨️ Full Scale Print
                         </button>
                         <button 
                           onClick={() => downloadPDF('tube-notch-template', 'tube-notch-template')}
                           className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors"
+                          title="Download as PDF (reference only - use Print for 1:1 scale)"
                         >
                           📄 PDF
                         </button>
                         <button 
                           onClick={() => downloadPNG('tube-notch-template', 'tube-notch-template')}
                           className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors"
+                          title="Download as PNG image"
                         >
                           🖼️ PNG
                         </button>
@@ -423,6 +430,24 @@ export default function TubeNotchCalculator() {
                         )
                       })}
                     </svg>
+                    </div>
+                    
+                    {/* On-screen ruler for verification */}
+                    <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-medium text-blue-800">📏 Scale Verification Ruler</span>
+                        <span className="text-xs text-blue-600">Hold physical ruler against screen to verify</span>
+                      </div>
+                      <div className="flex h-8 bg-white border-2 border-slate-700 rounded overflow-hidden">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                          <div key={i} className="flex-1 border-l border-slate-400 flex items-end justify-center pb-0.5 text-[9px] text-slate-700 font-mono first:border-l-0">
+                            {i}"
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-blue-700 mt-1.5">
+                        ⚠️ If ruler doesn't match your physical ruler, adjust browser zoom to 100% (Ctrl+0 / Cmd+0)
+                      </p>
                     </div>
                   </div>
 
