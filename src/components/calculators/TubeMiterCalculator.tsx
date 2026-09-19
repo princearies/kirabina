@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { printTemplate, downloadPDF, downloadPNG } from '../../utils/printUtils'
 
 export default function TubeMiterCalculator() {
   const [diameter, setDiameter] = useState('4')
@@ -256,10 +257,28 @@ export default function TubeMiterCalculator() {
                       <span className="text-sm text-purple-700 font-medium">
                         Miter Cut Template ({results.templateWidth.toFixed(2)}" × {results.templateHeight.toFixed(2)}")
                       </span>
-                      <button className="text-xs px-3 py-1 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors">
-                        🖨️ Print Template
-                      </button>
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => printTemplate('tube-miter-template')}
+                          className="text-xs px-3 py-1 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors"
+                        >
+                          🖨️ Print
+                        </button>
+                        <button 
+                          onClick={() => downloadPDF('tube-miter-template', 'tube-miter-template')}
+                          className="text-xs px-3 py-1 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors"
+                        >
+                          📄 PDF
+                        </button>
+                        <button 
+                          onClick={() => downloadPNG('tube-miter-template', 'tube-miter-template')}
+                          className="text-xs px-3 py-1 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors"
+                        >
+                          🖼️ PNG
+                        </button>
+                      </div>
                     </div>
+                    <div id="tube-miter-template">
                     <svg 
                       viewBox={`0 0 ${svgWidth} ${svgHeight}`} 
                       className="w-full h-48 bg-slate-50 rounded border border-slate-200"
@@ -315,6 +334,7 @@ export default function TubeMiterCalculator() {
                         )
                       })}
                     </svg>
+                    </div>
                   </div>
 
                   {/* Plot Points Table */}

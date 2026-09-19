@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { printTemplate, downloadPDF, downloadPNG } from '../../utils/printUtils'
 
 export default function TubeNotchCalculator() {
   const [parentDiameter, setParentDiameter] = useState('6')
@@ -312,10 +313,28 @@ export default function TubeNotchCalculator() {
                       <span className="text-sm text-orange-700 font-medium">
                         Saddle Cut Template ({results.circumference.toFixed(2)}" × {results.maxDepth.toFixed(2)}")
                       </span>
-                      <button className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors">
-                        🖨️ Print Template
-                      </button>
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => printTemplate('tube-notch-template')}
+                          className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors"
+                        >
+                          🖨️ Print
+                        </button>
+                        <button 
+                          onClick={() => downloadPDF('tube-notch-template', 'tube-notch-template')}
+                          className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors"
+                        >
+                          📄 PDF
+                        </button>
+                        <button 
+                          onClick={() => downloadPNG('tube-notch-template', 'tube-notch-template')}
+                          className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors"
+                        >
+                          🖼️ PNG
+                        </button>
+                      </div>
                     </div>
+                    <div id="tube-notch-template">
                     <svg 
                       viewBox={`0 0 ${svgWidth} ${svgHeight}`} 
                       className="w-full h-48 bg-slate-50 rounded border border-slate-200"
@@ -371,6 +390,7 @@ export default function TubeNotchCalculator() {
                         )
                       })}
                     </svg>
+                    </div>
                   </div>
 
                   {/* Plot Points Table */}

@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+/* Print styles */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Hide non-printable elements */
+  header,
+  footer,
+  button,
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Ensure templates print at correct scale */
+  .template-container {
+    page-break-inside: avoid;
+    width: 100%;
+  }
+  
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Ensure SVG renders crisply */
+svg {
+  shape-rendering: geometricPrecision;
+}
