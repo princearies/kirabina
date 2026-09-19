@@ -1,14 +1,18 @@
 import { useState, useMemo } from 'react'
 import { printTemplate, downloadPDF, downloadPNG } from '../../utils/printUtils'
+import { Unit, toInches, fromInches, formatMeasurement } from '../../utils/unitConversion'
 
 export default function TubeMiterCalculator() {
   const [diameter, setDiameter] = useState('4')
   const [angle, setAngle] = useState('90')
   const [halfTemplate, setHalfTemplate] = useState(false)
   const [plotIncrements, setPlotIncrements] = useState('10')
+  const [unit, setUnit] = useState<Unit>('in')
 
   const results = useMemo(() => {
-    const D = parseFloat(diameter) || 0
+    // Convert input to inches for calculations
+    const D_input = parseFloat(diameter) || 0
+    const D = toInches(D_input, unit)
     const joinedAngle = parseFloat(angle) || 0
 
     if (D <= 0 || joinedAngle <= 0 || joinedAngle >= 180) return null
@@ -82,7 +86,7 @@ export default function TubeMiterCalculator() {
       D,
       R,
     }
-  }, [diameter, angle, plotIncrements])
+  }, [diameter, angle, plotIncrements, unit])
 
   // SVG dimensions
   const svgWidth = 500
@@ -138,17 +142,48 @@ export default function TubeMiterCalculator() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Tube Outside Diameter (inches)
+                    Unit System
                   </label>
-                  <select
+                  <div className="grid grid-cols-2 gap-2 mb-3">
+                    <button
+                      onClick={() => setUnit('in')}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        unit === 'in'
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      Imperial (inches)
+                    </button>
+                    <button
+                      onClick={() => setUnit('mm')}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        unit === 'mm'
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      Metric (mm)
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Tube Outside Diameter ({unit === 'mm' ? 'mm' : 'inches'})
+                  </label>
+                  <input
+                    type="number"
                     value={diameter}
                     onChange={(e) => setDiameter(e.target.value)}
+                    step="any"
+                    min="0"
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all"
-                  >
-                    {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 11, 12].map(d => (
-                      <option key={d} value={d}>{d}"</option>
-                    ))}
-                  </select>
+                    placeholder={unit === 'mm' ? 'e.g., 100' : 'e.g., 4'}
+                  />
+                  <p className="text-xs text-slate-500 mt-1">
+                    {unit === 'mm' ? 'Common: 25mm, 50mm, 75mm, 100mm, 150mm' : 'Common: 1", 2", 3", 4", 6"'}
+                  </p>
                 </div>
 
                 <div>
@@ -239,15 +274,15 @@ export default function TubeMiterCalculator() {
                     </div>
                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-500">Max Cut Height</div>
-                      <div className="text-lg font-bold text-slate-800">{results.maxHeight.toFixed(3)}"</div>
+                      <div className="text-lg font-bold text-slate-800">{formatMeasurement(fromInches(results.maxHeight, unit), unit)}</div>
                     </div>
                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-500">Circumference</div>
-                      <div className="text-lg font-bold text-slate-800">{results.circumference.toFixed(3)}"</div>
+                      <div className="text-lg font-bold text-slate-800">{formatMeasurement(fromInches(results.circumference, unit), unit)}</div>
                     </div>
                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-500">Weld Length (approx)</div>
-                      <div className="text-lg font-bold text-slate-800">{results.weldLength.toFixed(3)}"</div>
+                      <div className="text-lg font-bold text-slate-800">{formatMeasurement(fromInches(results.weldLength, unit), unit)}</div>
                     </div>
                   </div>
 
@@ -255,7 +290,7 @@ export default function TubeMiterCalculator() {
                   <div className="bg-white rounded-lg p-4 border-2 border-dashed border-purple-200">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-purple-700 font-medium">
-                        Miter Cut Template ({results.templateWidth.toFixed(2)}" × {results.templateHeight.toFixed(2)}")
+                        Miter Cut Template ({formatMeasurement(fromInches(results.templateWidth, unit), unit)} × {formatMeasurement(fromInches(results.templateHeight, unit), unit)})
                       </span>
                       <div className="flex gap-2">
                         <button 
@@ -317,10 +352,10 @@ export default function TubeMiterCalculator() {
                       
                       {/* Labels */}
                       <text x={svgWidth / 2} y={svgHeight - 5} textAnchor="middle" fontSize="10" fill="#6b7280">
-                        ← Circumference: {results.circumference.toFixed(2)}" →
+                        ← Circumference: {formatMeasurement(fromInches(results.circumference, unit), unit)} →
                       </text>
                       <text x={5} y={svgHeight / 2} textAnchor="middle" fontSize="9" fill="#6b7280" transform={`rotate(-90, 5, ${svgHeight/2})`}>
-                        Height: {results.maxHeight.toFixed(2)}"
+                        Height: {formatMeasurement(fromInches(results.maxHeight, unit), unit)}
                       </text>
                       
                       {/* Degree markers */}
@@ -347,16 +382,16 @@ export default function TubeMiterCalculator() {
                         <thead className="sticky top-0 bg-indigo-100">
                           <tr>
                             <th className="text-left p-1.5 text-indigo-800">Angle</th>
-                            <th className="text-left p-1.5 text-indigo-800">Lateral Distance</th>
-                            <th className="text-left p-1.5 text-indigo-800">Cut Height</th>
+                            <th className="text-left p-1.5 text-indigo-800">Lateral Distance ({unit})</th>
+                            <th className="text-left p-1.5 text-indigo-800">Cut Height ({unit})</th>
                           </tr>
                         </thead>
                         <tbody>
                           {results.plotPoints.map((point, i) => (
                             <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-indigo-50'}>
                               <td className="p-1.5 text-slate-700">{point.angle}°</td>
-                              <td className="p-1.5 text-slate-700">{point.lateralDistance.toFixed(3)}"</td>
-                              <td className="p-1.5 text-slate-700 font-medium">{point.height.toFixed(3)}"</td>
+                              <td className="p-1.5 text-slate-700">{formatMeasurement(fromInches(point.lateralDistance, unit), unit)}</td>
+                              <td className="p-1.5 text-slate-700 font-medium">{formatMeasurement(fromInches(point.height, unit), unit)}</td>
                             </tr>
                           ))}
                         </tbody>

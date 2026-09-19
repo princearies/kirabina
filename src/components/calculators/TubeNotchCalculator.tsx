@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { printTemplate, downloadPDF, downloadPNG } from '../../utils/printUtils'
+import { Unit, toInches, fromInches, formatMeasurement } from '../../utils/unitConversion'
 
 export default function TubeNotchCalculator() {
   const [parentDiameter, setParentDiameter] = useState('6')
@@ -8,11 +9,17 @@ export default function TubeNotchCalculator() {
   const [cutAngle, setCutAngle] = useState('90')
   const [halfTemplate, setHalfTemplate] = useState(false)
   const [plotIncrements, setPlotIncrements] = useState('10')
+  const [unit, setUnit] = useState<Unit>('in')
 
   const results = useMemo(() => {
-    const D1 = parseFloat(parentDiameter) || 0  // Parent tube diameter
-    const D2 = parseFloat(cutDiameter) || 0     // Cut tube diameter
-    const wall = parseFloat(wallThickness) || 0
+    // Convert inputs to inches for calculations
+    const D1_input = parseFloat(parentDiameter) || 0
+    const D2_input = parseFloat(cutDiameter) || 0
+    const wall_input = parseFloat(wallThickness) || 0
+    
+    const D1 = toInches(D1_input, unit)  // Parent tube diameter in inches
+    const D2 = toInches(D2_input, unit)  // Cut tube diameter in inches
+    const wall = toInches(wall_input, unit)  // Wall thickness in inches
     const angle = parseFloat(cutAngle) || 90
 
     if (D1 <= 0 || D2 <= 0 || D2 > D1) return null
@@ -100,7 +107,7 @@ export default function TubeNotchCalculator() {
       D2,
       effectiveCutDiameter,
     }
-  }, [parentDiameter, cutDiameter, wallThickness, cutAngle, plotIncrements])
+  }, [parentDiameter, cutDiameter, wallThickness, cutAngle, plotIncrements, unit])
 
   // SVG dimensions
   const svgWidth = 500
@@ -156,50 +163,76 @@ export default function TubeNotchCalculator() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Parent Tube Diameter (inches)
+                    Unit System
                   </label>
-                  <select
+                  <div className="grid grid-cols-2 gap-2 mb-3">
+                    <button
+                      onClick={() => setUnit('in')}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        unit === 'in'
+                          ? 'bg-orange-600 text-white'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      Imperial (inches)
+                    </button>
+                    <button
+                      onClick={() => setUnit('mm')}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        unit === 'mm'
+                          ? 'bg-orange-600 text-white'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      Metric (mm)
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Parent Tube Diameter ({unit === 'mm' ? 'mm' : 'inches'})
+                  </label>
+                  <input
+                    type="number"
                     value={parentDiameter}
                     onChange={(e) => setParentDiameter(e.target.value)}
+                    step="any"
+                    min="0"
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                  >
-                    {[2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 11, 12].map(d => (
-                      <option key={d} value={d}>{d}"</option>
-                    ))}
-                  </select>
+                    placeholder={unit === 'mm' ? 'e.g., 150' : 'e.g., 6'}
+                  />
                   <p className="text-xs text-slate-500 mt-1">Main tube that stays intact</p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Cut Tube Diameter (inches)
+                    Cut Tube Diameter ({unit === 'mm' ? 'mm' : 'inches'})
                   </label>
-                  <select
+                  <input
+                    type="number"
                     value={cutDiameter}
                     onChange={(e) => setCutDiameter(e.target.value)}
+                    step="any"
+                    min="0"
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                  >
-                    {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6].map(d => (
-                      <option key={d} value={d} disabled={d > parseFloat(parentDiameter)}>
-                        {d}" {d > parseFloat(parentDiameter) ? '(too large)' : ''}
-                      </option>
-                    ))}
-                  </select>
+                    placeholder={unit === 'mm' ? 'e.g., 100' : 'e.g., 4'}
+                  />
                   <p className="text-xs text-slate-500 mt-1">Tube to be notched (must be ≤ parent)</p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Cut Tube Wall Thickness (inches)
+                    Cut Tube Wall Thickness ({unit === 'mm' ? 'mm' : 'inches'})
                   </label>
                   <input
                     type="number"
                     value={wallThickness}
                     onChange={(e) => setWallThickness(e.target.value)}
-                    step="0.001"
+                    step="any"
                     min="0"
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="0.125"
+                    placeholder={unit === 'mm' ? 'e.g., 3' : 'e.g., 0.125'}
                   />
                   <p className="text-xs text-slate-500 mt-1">
                     0 = cut to outside diameter (grind to fit)<br/>
@@ -272,8 +305,8 @@ export default function TubeNotchCalculator() {
                     <path d="M 45 50 Q 60 60 75 50" fill="rgba(234, 88, 12, 0.2)" stroke="#ea580c" strokeWidth="1" strokeDasharray="2" />
                     
                     {/* Labels */}
-                    <text x="60" y="80" textAnchor="middle" fontSize="8" fill="#ea580c">Parent: {parentDiameter}"</text>
-                    <text x="60" y="10" textAnchor="middle" fontSize="8" fill="#dc2626">Cut: {cutDiameter}"</text>
+                    <text x="60" y="80" textAnchor="middle" fontSize="8" fill="#ea580c">Parent: {parentDiameter}{unit === 'mm' ? 'mm' : '"'}</text>
+                    <text x="60" y="10" textAnchor="middle" fontSize="8" fill="#dc2626">Cut: {cutDiameter}{unit === 'mm' ? 'mm' : '"'}</text>
                   </svg>
                 </div>
               </div>
@@ -291,19 +324,19 @@ export default function TubeNotchCalculator() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-500">Max Notch Depth</div>
-                      <div className="text-lg font-bold text-orange-600">{results.maxDepth.toFixed(3)}"</div>
+                      <div className="text-lg font-bold text-orange-600">{formatMeasurement(fromInches(results.maxDepth, unit), unit)}</div>
                     </div>
                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-500">Cut Tube Circumference</div>
-                      <div className="text-lg font-bold text-slate-800">{results.circumference.toFixed(3)}"</div>
+                      <div className="text-lg font-bold text-slate-800">{formatMeasurement(fromInches(results.circumference, unit), unit)}</div>
                     </div>
                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-500">Notch Length (approx)</div>
-                      <div className="text-lg font-bold text-slate-800">{results.notchLength.toFixed(3)}"</div>
+                      <div className="text-lg font-bold text-slate-800">{formatMeasurement(fromInches(results.notchLength, unit), unit)}</div>
                     </div>
                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-500">Effective Cut Dia.</div>
-                      <div className="text-lg font-bold text-slate-800">{results.effectiveCutDiameter.toFixed(3)}"</div>
+                      <div className="text-lg font-bold text-slate-800">{formatMeasurement(fromInches(results.effectiveCutDiameter, unit), unit)}</div>
                     </div>
                   </div>
 
@@ -311,7 +344,7 @@ export default function TubeNotchCalculator() {
                   <div className="bg-white rounded-lg p-4 border-2 border-dashed border-orange-200">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-orange-700 font-medium">
-                        Saddle Cut Template ({results.circumference.toFixed(2)}" × {results.maxDepth.toFixed(2)}")
+                        Saddle Cut Template ({formatMeasurement(fromInches(results.circumference, unit), unit)} × {formatMeasurement(fromInches(results.maxDepth, unit), unit)})
                       </span>
                       <div className="flex gap-2">
                         <button 
@@ -373,10 +406,10 @@ export default function TubeNotchCalculator() {
                       
                       {/* Labels */}
                       <text x={svgWidth / 2} y={svgHeight - 5} textAnchor="middle" fontSize="10" fill="#6b7280">
-                        ← Circumference: {results.circumference.toFixed(2)}" →
+                        ← Circumference: {formatMeasurement(fromInches(results.circumference, unit), unit)} →
                       </text>
                       <text x={5} y={svgHeight / 2} textAnchor="middle" fontSize="9" fill="#6b7280" transform={`rotate(-90, 5, ${svgHeight/2})`}>
-                        Depth: {results.maxDepth.toFixed(2)}"
+                        Depth: {formatMeasurement(fromInches(results.maxDepth, unit), unit)}
                       </text>
                       
                       {/* Degree markers */}
@@ -403,16 +436,16 @@ export default function TubeNotchCalculator() {
                         <thead className="sticky top-0 bg-red-100">
                           <tr>
                             <th className="text-left p-1.5 text-red-800">Angle</th>
-                            <th className="text-left p-1.5 text-red-800">Lateral Distance</th>
-                            <th className="text-left p-1.5 text-red-800">Notch Depth</th>
+                            <th className="text-left p-1.5 text-red-800">Lateral Distance ({unit})</th>
+                            <th className="text-left p-1.5 text-red-800">Notch Depth ({unit})</th>
                           </tr>
                         </thead>
                         <tbody>
                           {results.plotPoints.map((point, i) => (
                             <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-red-50'}>
                               <td className="p-1.5 text-slate-700">{point.angle}°</td>
-                              <td className="p-1.5 text-slate-700">{point.lateralDistance.toFixed(3)}"</td>
-                              <td className="p-1.5 text-slate-700 font-medium">{point.depth.toFixed(3)}"</td>
+                              <td className="p-1.5 text-slate-700">{formatMeasurement(fromInches(point.lateralDistance, unit), unit)}</td>
+                              <td className="p-1.5 text-slate-700 font-medium">{formatMeasurement(fromInches(point.depth, unit), unit)}</td>
                             </tr>
                           ))}
                         </tbody>
