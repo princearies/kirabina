@@ -9,6 +9,7 @@ const categories = [
     color: 'from-red-500 to-red-600',
     calculators: [
       { id: 'concrete', name: 'Concrete Calculator', desc: 'Calculate volume of concrete needed for slabs, footings, and columns' },
+      { id: 'rebar', name: 'Rebar Calculator', desc: 'Calculate rebar spacing, layout, weight and cost for concrete slabs' },
       { id: 'brick', name: 'Brick Calculator', desc: 'Calculate number of bricks, blocks, and mortar needed' },
     ]
   },
