@@ -44,6 +44,7 @@ const categories = [
     calculators: [
       { id: 'tube-miter', name: 'Round Tube Miter', desc: 'Generate printable miter cutting templates for round tubes and pipes' },
       { id: 'tube-notch', name: 'Tube Notching', desc: 'Generate saddle cut templates for tube-to-tube intersections' },
+      { id: 'round-square-reducer', name: 'Round → Square Reducer', desc: 'Generate flat pattern templates for round to square tube transitions' },
     ]
   },
 ]
