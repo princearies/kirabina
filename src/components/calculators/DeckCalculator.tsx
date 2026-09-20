@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BackButton from '../BackButton'
 
 export default function DeckCalculator() {
   const [deckWidth, setDeckWidth] = useState('')
@@ -42,6 +43,7 @@ export default function DeckCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <BackButton />
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-6 text-white">
           <div className="flex items-center gap-3">

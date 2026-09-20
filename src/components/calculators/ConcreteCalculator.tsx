@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Unit, toInches, fromInches, formatMeasurement } from '../../utils/unitConversion'
+import BackButton from '../BackButton'
 
 type Shape = 'slab' | 'footing' | 'column' | 'stairs'
 
@@ -82,6 +83,7 @@ export default function ConcreteCalculator() {
 
   return (
     <div className="max-w-5xl mx-auto">
+      <BackButton />
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-red-500 to-red-600 px-8 py-6 text-white">
           <div className="flex items-center gap-3">
