@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { printTemplate, downloadPDF, downloadPNG } from '../../utils/printUtils'
 import { Unit, toInches, fromInches, formatMeasurement } from '../../utils/unitConversion'
+import BackButton from '../BackButton'
 
 export default function RoundSquareReducerCalculator() {
   const [squareWidth, setSquareWidth] = useState('4')
@@ -224,6 +225,7 @@ export default function RoundSquareReducerCalculator() {
 
   return (
     <div className="max-w-5xl mx-auto">
+      <BackButton />
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-teal-600 to-cyan-600 px-8 py-6 text-white">
           <div className="flex items-center gap-3">

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BackButton from '../BackButton'
 
 export default function StairCalculator() {
   const [totalRise, setTotalRise] = useState('')
@@ -33,6 +34,7 @@ export default function StairCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <BackButton />
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-green-500 to-green-600 px-8 py-6 text-white">
           <div className="flex items-center gap-3">

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BackButton from '../BackButton'
 
 export default function FenceCalculator() {
   const [fenceLength, setFenceLength] = useState('')
@@ -46,6 +47,7 @@ export default function FenceCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <BackButton />
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-8 py-6 text-white">
           <div className="flex items-center gap-3">
